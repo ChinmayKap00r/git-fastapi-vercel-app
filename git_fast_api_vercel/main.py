@@ -20,7 +20,7 @@ with open("verceljson.json", "r") as file:
 # Convert list to dictionary for fast lookups
 student_marks = {student["name"]: student["marks"] for student in data}
 
-@app.get("/api")
+@app.get("/")
 def get_marks(name: list[str] = Query(...)):
     marks = [student_marks.get(n, 0) for n in name]
     # print(marks)
