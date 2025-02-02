@@ -23,4 +23,7 @@ student_marks = {student["name"]: student["marks"] for student in data}
 @app.get("/api")
 def get_marks(name: list[str] = Query(...)):
     marks = [student_marks.get(n, 0) for n in name]
+    # print(marks)
     return {"marks": marks}
+
+# get_marks(student_marks)
