@@ -7,13 +7,13 @@ app = FastAPI()
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Allow all origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
 )
 
-# Load data from JSON file
+# Load data from JSON file (verceljson.json should contain a list of students with names and marks)
 with open("verceljson.json", "r") as file:
     data = json.load(file)
 
@@ -21,7 +21,13 @@ with open("verceljson.json", "r") as file:
 student_marks = {student["name"]: student["marks"] for student in data}
 
 @app.get("/")
-def get_marks(name: list[str] = Query(...)):
+async def root():
+    return {"message": "Welcome to the vercel API. Use /api to access data."}
+
+
+@app.get("/api")
+def get_marks(name: list[str] = Query(...)):  # Accepting multiple 'name' query parameters as a list
+    # Get marks for each name, defaulting to 0 if not found
     marks = [student_marks.get(n, 0) for n in name]
     # print(marks)
     return {"marks": marks}
